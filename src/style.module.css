@@ -1,0 +1,112 @@
+.BannerColor{
+    background-color: #f06261;
+}
+
+.BackgroundColor{
+    background-color: #e5e5e5;
+}
+
+.lg_panel{
+    padding: 10px;
+    background-color: #f4f6f6;
+    box-shadow: 2px 5px 5px grey;
+
+    height: 70vh;
+}
+
+.md_panel{
+    padding: 10px;
+    background-color: #f4f6f6;
+    box-shadow: 2px 5px 5px grey;
+
+    height: 62vh;
+}
+
+.sm_panel{
+    padding: 10px;
+    background-color: #f4f6f6;
+    box-shadow: 2px 5px 5px grey;
+    height: 30vh;
+    margin-bottom: 14px;
+}
+.MenuColor{
+    background-color: #3d3b3c;
+}
+
+.WhiteColor{
+    color:#FFFFFF;
+}
+
+.iconRed{
+    color: #f06261;
+    height: 20px;
+    width: 20px;
+    margin-left:-30px;
+    margin-bottom: 5px;
+}
+
+.searchBar{
+    background-color: #f4f6f6;
+    border:none;
+    border-radius: 30px;
+    box-shadow: 2px 5px 5px grey;
+}
+.centerVH{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.accountName{
+    color:#FFFFFF;
+    margin: 0;
+    position: absolute;
+    top: 45%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.productItemUnselect{
+    margin-right:10px;
+    border:0;
+    background-color: #f06261;
+    color:white;
+    border-radius: 30px;
+    box-shadow: 2px 2px 5px grey;
+    padding:10px;
+}
+
+.productItemSelect{
+    border:0;
+    background-color: white;
+    color:#f06261;
+    border-radius: 30px;
+    box-shadow: 2px 2px 5px grey;
+    padding:5px;
+}
+
+.customInput{
+    background:none;
+    border:0;
+    border-bottom: 2px #f06261 solid;
+}
+
+.leftIcon{
+    width: 70%;
+}
+
+.profileImage{
+    transform: translateY(-50%);
+    box-shadow: 2px 2px 5px grey;
+}
+
+
+.customButton{
+    background-color: #f06261;
+    border:0;
+    border-radius: 30px;
+    box-shadow: 2px 2px 5px grey;
+}

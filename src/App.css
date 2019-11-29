@@ -1,5 +1,18 @@
+html,body{
+  margin:0;
+}
+#root{
+  margin:0;
+  height: 100vh !important;
+  background-color: #e5e5e5;
+}
+
 .App {
   text-align: center;
+}
+
+div{
+  margin:0;
 }
 
 .App-logo {
@@ -20,3 +33,4 @@
 .App-link {
   color: #09d3ac;
 }
+
