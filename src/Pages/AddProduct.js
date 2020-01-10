@@ -6,9 +6,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { getAllProducts } from '../API/fakeAPI';
 
 class Chat extends Component{
+
     render(){
+        let products = getAllProducts();
+        console.log(products);
         return(
             <div>
                 <Form>

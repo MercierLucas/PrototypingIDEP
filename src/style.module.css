@@ -10,8 +10,8 @@
     padding: 10px;
     background-color: #f4f6f6;
     box-shadow: 2px 5px 5px grey;
-
-    height: 70vh;
+    height: 80vh;
+    width: 100%;
 }
 
 .md_panel{
@@ -109,4 +109,60 @@
     border:0;
     border-radius: 30px;
     box-shadow: 2px 2px 5px grey;
+}
+/* CHAT */
+
+.leftAlignedBox .userBubble{
+    border-radius:20px;
+    background-color: rgba(240, 98, 97, 0.5);
+    font-size: 12px;
+    flex:2;
+}
+
+.rightAlignedBox .userBubble{
+    border-radius:20px;
+    background-color: rgba(61, 59, 60, 0.5);
+    font-size: 12px;
+    flex:2;
+}
+
+.leftAlignedBox div,.rightAlignedBox div{
+    margin:0 10px;
+}
+
+.chatBox{
+    margin-bottom: 10px;
+    background-color: #e5e5e5;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.leftAlignedBox {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.rightAlignedBox {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.scrollableChat{
+    height: 80%;
+    flex:1;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #F06261 #f4f6f6;
+}
+
+.chatInput{
+    font-size: 12px;
+    border:0;
+    border-radius: 5px;
+    background-color: #e5e5e5;
+    padding: 5px;
+    resize: none;
 }

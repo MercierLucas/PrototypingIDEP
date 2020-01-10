@@ -11,6 +11,25 @@ import Col from 'react-bootstrap/Col';
 
 
 class BackOfficeProducts extends Component{
+    constructor(){
+        super();
+        this.state=({
+            products:[],
+            isLoading:false
+        });
+    }
+
+    componentDidMount(){
+        console.log('Mounted')
+        this.setState({ isLoading: true });
+        fetch("https://my-json-server.typicode.com/MercierLucas/demo_git/products")
+          .then(response => response.json())
+          .then(data =>{
+              console.log(data);
+              this.setState({isLoading:false,products:data})
+              //this.setState({ hits: data.hits, isLoading: false })
+            });
+    }
     render(){
         return(
             <div className="text-center">
@@ -21,10 +40,14 @@ class BackOfficeProducts extends Component{
                     <Col>Status</Col>
                     <Col>Price</Col>
                 </Row>
-
-                <BOProductItems name="Python book" from="Lucas M." for="Guillaume E." status="on time" price="4c"/>
-                <BOProductItems name="Appareil raclette" from="Lucas M." for="Guillaume E." status="on time" price="8c"/>
-                <BOProductItems name="Casquette full speed" from="Julien BR" for="Guillaume E." status="on time" price="1000c"/>
+                {
+                    this.state.products.map(product=>(
+                        <BOProductItems name={product.product_name} from={product.proposedBy} for={product.borrowedBy} status="on time" price={product.price}/>
+                    ))
+/*                     Object.keys(this.state.products).map((keyName,key)=>(
+                        <BOProductItems name={} from="Lucas M." for="Guillaume E." status="on time" price="4c"/>
+                    )) */
+                }
             </div>
         );
     }

@@ -12,6 +12,7 @@ class Home extends Component{
                 <Row>
                     <Col><Button variant="outline-primary"><Link to='/'>Home</Link></Button></Col>
                     <Col><Button variant="outline-primary"><Link to='/Connexion'>Connexion</Link></Button></Col>
+                    <Col><Button variant="outline-primary"><Link to='/Register'>Register</Link></Button></Col>
                 </Row>
             </div>
         );
