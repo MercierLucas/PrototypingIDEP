@@ -54,6 +54,27 @@ export const  login = async (username,password)=>{
     }
 }
 
+export const  checkCreditentials = async (jwt)=>{
+  let url = API_URL+'auth/me'
+  //console.log("sending jwt "+jwt)
+  const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization':'Bearer '+jwt,
+      }
+    })
+
+    try {
+      const myJson = await response.json(); //extract JSON from the http response
+      //console.log(Object.keys(myJson))
+      if(typeof myJson.authenticated !== 'undefined')
+        return myJson.authenticated
+      else
+        return false;
+    } catch (error) {
+      return false;
+    }
+}
 
 
 export const getAllProducts = async ()=>{

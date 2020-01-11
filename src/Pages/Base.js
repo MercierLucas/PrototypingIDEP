@@ -6,11 +6,15 @@ import MyProfile from './MyProfile';
 import Chat from './Chat';
 import Search from './Search';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route,Router } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 class Base extends Component{
+
+    componentDidUpdate(){
+        console.log("USR router called")
+    }
     render(){
         return(
             <Row style={{height:"100vh",width:"100vw"}}>

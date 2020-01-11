@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import styles from '../style.module.css'
 
 import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
-import { Link } from 'react-router-dom';
+import { Link,Redirect,useHistory} from 'react-router-dom';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -11,16 +12,22 @@ import Image from 'react-bootstrap/Image'
 
 import {login} from '../API/fakeAPI'
 import test from '../test.svg'
+
+import Cookies from 'js-cookie';
+
 class Connexion extends Component{
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state=({
             username:'',
             password:'',
-            errorMessage:''
+            errorMessage:'',
+            redirect:false
 
         });
+
+        this.checkForCredits = this.props.check.bind(this)
     }
 
     onUsernameChange(e){
@@ -31,18 +38,20 @@ class Connexion extends Component{
         this.setState({password:e.target.value})
     }
 
-    async onSubmit(e){
+    onSubmit = async (e) => {
         console.log("submiting")
         e.preventDefault()
         if(this.state.username.length !== 0 && this.state.password.length !== 0){
             this.setState({errorMessage:""})
             let res=await login(this.state.username,this.state.password)
-            console.log("RES: "+res)
             if(res === false)
                 this.setState({errorMessage:"Wrong password"})
             else{
                 let jwt = res
-                console.log("Login: "+jwt)
+                Cookies.set('jwt',jwt)
+                //console.log("Login: "+Cookies.get('jwt'))
+                this.setState({redirect:true})
+                this.checkForCredits()
             }
         }else{
             this.setState({errorMessage:"Please fill both fields before submitting"})
@@ -70,7 +79,7 @@ class Connexion extends Component{
                         </Col>
                         <Col className="block-example border border-dark" style={{ borderRadius: 30}}>
                             <h1>Login</h1>
-                            <Form onSubmit={(e)=>this.onSubmit(e)}>
+                            <Form onSubmit={(e)=>this.onSubmit(e)} className={styles.centerVH} >
                                 <Row>
                                     <Col>
                                         <Form.Group controlId="formBasicUsername">
@@ -91,10 +100,13 @@ class Connexion extends Component{
                                     Connect
                             </Button>
                             { //Check if message failed
-                                (this.state.errorMessage  === '')
-                                ? <div></div> 
-                                : <Alert className="w-100 mt-5" variant='danger'>{this.state.errorMessage}</Alert>
+                                (this.state.errorMessage  !== '') && <Alert className="w-100 mt-5" variant='danger'>{this.state.errorMessage}</Alert>
                             }
+
+                            { //redirect if logged in
+                                (this.state.redirect  === true) && <Redirect to='/usr'push />
+                            } 
+                            
                             </Form>
 
                         </Col>

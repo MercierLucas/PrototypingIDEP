@@ -10,7 +10,12 @@ import SearchBar from '../Components/SearchBar';
 import CustomButton from '../Components/CustomButton';
 
 
+
 class MyProfile extends Component{
+
+    componentDidMount(){
+        console.log("yo")
+    }
     render(){
         return(
             <div className="mt-5">
