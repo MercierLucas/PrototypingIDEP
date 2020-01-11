@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Image from 'react-bootstrap/Image'
+import LoadingScreen from '../Components/LoadingScreen'
 
 import {login} from '../API/fakeAPI'
 import test from '../test.svg'
@@ -23,7 +24,8 @@ class Connexion extends Component{
             username:'',
             password:'',
             errorMessage:'',
-            redirect:false
+            redirect:false,
+            isLoading:false
 
         });
 
@@ -47,11 +49,18 @@ class Connexion extends Component{
             if(res === false)
                 this.setState({errorMessage:"Wrong password"})
             else{
+                this.setState({isLoading:true})
                 let jwt = res
                 Cookies.set('jwt',jwt)
                 //console.log("Login: "+Cookies.get('jwt'))
-                this.setState({redirect:true})
+                
                 this.checkForCredits()
+                setTimeout(()=>{
+                    this.setState({redirect:true})
+                    console.log("waited 2s")
+                    this.setState({isLoading:false})
+                },2000)
+                
             }
         }else{
             this.setState({errorMessage:"Please fill both fields before submitting"})
@@ -60,7 +69,9 @@ class Connexion extends Component{
 
     render(){
         return(
+            
             <div className="text-center" style={{backgroundColor:'#E5E5E5',padding:25}}>
+                { (this.state.isLoading === true ) && <LoadingScreen/>}
                 <Col className=" mt-5 col-md-12">
                     <Row>
                         <Col>

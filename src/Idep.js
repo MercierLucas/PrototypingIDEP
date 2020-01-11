@@ -35,13 +35,13 @@ class Idep extends Component{
             this.setState({login:false})
         }
         console.log("Is logged :"+isLogged)
-        
+        return 
     }
 
     componentDidMount = async () =>{
         console.log("BASE router called")
-        let temp = await this.checkForCredits()
-        this.setState({login:temp},console.log("UPDATE STATE : "+this.state.login))
+        this.checkForCredits()
+        //this.setState({login:temp},console.log("UPDATE STATE : "+this.state.login))
         
     }
 
