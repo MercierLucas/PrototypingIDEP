@@ -18,20 +18,23 @@ class Chat extends Component{
                 <Form>
                     <Row>
                         <Col>
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2">Email</Form.Label>
+                        
+                            <Form.Group as={Row} controlId="formPlaintextPassword">
+                                <Form.Label column sm="2">
+                                Item title
+                                </Form.Label>
                                 <Col sm="10">
-                                    <Form.Control plaintext readOnly defaultValue="email@example.com" />
+                                    <Form.Control type="text" placeholder="Python book, Saw etc." />
                                 </Col>
                             </Form.Group>
-
                             <Form.Group as={Row} controlId="formPlaintextPassword">
                                 <Form.Label column sm="2">
                                 Category
                                 </Form.Label>
                                 <Col sm="10">
-                                    <Form.Control type="password" placeholder="Password" />
+                                    <Form.Control type="text" placeholder="Book, DVD etc." />
                                 </Col>
+
                             </Form.Group>
 
                             <Form.Group as={Row} controlId="formPlaintextPassword">

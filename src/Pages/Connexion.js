@@ -12,7 +12,7 @@ import Image from 'react-bootstrap/Image'
 import LoadingScreen from '../Components/LoadingScreen'
 
 import {login} from '../API/fakeAPI'
-import test from '../test.svg'
+import illustration from '../img/connexion.svg'
 
 import Cookies from 'js-cookie';
 
@@ -69,61 +69,64 @@ class Connexion extends Component{
 
     render(){
         return(
-            
-            <div className="text-center" style={{backgroundColor:'#E5E5E5',padding:25}}>
+            <div className="text-center w-100 h-100" style={{backgroundColor:'#E5E5E5',padding:25}}>
                 { (this.state.isLoading === true ) && <LoadingScreen/>}
-                <Col className=" mt-5 col-md-12">
-                    <Row>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <h1>Don't have an account yet?</h1>
-                                </Col>
-                                <Col>
-                                    <Button variant="outline-primary" type="submit" size="lg">
-                                        <Link to='/Register'>Register</Link>
-                            </Button>
-                                </Col>
-
-                            </Row>
-                            <Image src={test} fluid />
-                        </Col>
-                        <Col className="block-example border border-dark" style={{ borderRadius: 30}}>
-                            <h1>Login</h1>
-                            <Form onSubmit={(e)=>this.onSubmit(e)} className={styles.centerVH} >
+                <div className={styles.centerLogin} >
+                    <Col style={this.state.isLoading ? {'filter':'blur(20px)'} : {}}>
+                        <Row>
+                            <Col>
                                 <Row>
                                     <Col>
-                                        <Form.Group controlId="formBasicUsername">
-                                            <Form.Label>Username</Form.Label>
-                                            <Form.Control type="name" placeholder="TCrews" onChange={(value)=>this.onUsernameChange(value)} value={this.state.username} />
-                                        </Form.Group>
+                                        <h1>Don't have an account yet?</h1>
                                     </Col>
-                                </Row>
-                                <Row>
                                     <Col>
-                                        <Form.Group controlId="formBasicPassword">
-                                            <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="******" onChange={(value)=>this.onPasswordChange(value)} value={this.state.password} />
-                                        </Form.Group>
+                                        <Link to='/Register'>
+                                            <Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg">
+                                                Register
+                                            </Button>
+                                        </Link>
                                     </Col>
+
                                 </Row>
-                                <Button variant="outline-primary" type="submit" size="lg" >
-                                    Connect
-                            </Button>
-                            { //Check if message failed
-                                (this.state.errorMessage  !== '') && <Alert className="w-100 mt-5" variant='danger'>{this.state.errorMessage}</Alert>
-                            }
+                                <Image src={illustration} fluid />
+                            </Col>
+                            <Col className="block-example border border-dark" style={{ borderRadius: 30}}>
+                                <h1>Login</h1>
+                                <Form onSubmit={(e)=>this.onSubmit(e)} className={styles.centerVH} >
+                                    <Row>
+                                        <Col>
+                                            <Form.Group controlId="formBasicUsername">
+                                                <Form.Label>Username</Form.Label>
+                                                <Form.Control type="name" placeholder="TCrews" onChange={(value)=>this.onUsernameChange(value)} value={this.state.username} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Form.Group controlId="formBasicPassword">
+                                                <Form.Label>Password</Form.Label>
+                                                <Form.Control type="password" placeholder="******" onChange={(value)=>this.onPasswordChange(value)} value={this.state.password} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg" >
+                                        Connect
+                                </Button>
+                                { //Check if message failed
+                                    (this.state.errorMessage  !== '') && <Alert className="w-100 mt-5" variant='danger'>{this.state.errorMessage}</Alert>
+                                }
 
-                            { //redirect if logged in
-                                (this.state.redirect  === true) && <Redirect to='/usr'push />
-                            } 
-                            
-                            </Form>
+                                { //redirect if logged in
+                                    (this.state.redirect  === true) && <Redirect to='/usr'push />
+                                } 
+                                
+                                </Form>
 
-                        </Col>
+                            </Col>
 
-                    </Row>
-                </Col>
+                        </Row>
+                    </Col>
+                </div>
             </div>
         );
     }

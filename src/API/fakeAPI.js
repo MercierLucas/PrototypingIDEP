@@ -1,5 +1,8 @@
+import Cookies from 'js-cookie';
+
 const API_TOKEN = "";
 const API_URL="https://idep-2020.herokuapp.com/";
+
 
 export function getUsers(){
     const url = "https://my-json-server.typicode.com/MercierLucas/demo_git/products";
@@ -12,7 +15,7 @@ export function getUsers(){
 
 
 export const  register = async (firstname,lastname,username,email,password)=>{
-  let reqBody = '{"forename":"'+firstname+'","surname":"'+lastname+'","username":"'+username+'","email":"'+email+'","password":"'+password+'"}';
+  let reqBody = '{"forename":"'+firstname+'","surname":"'+lastname+'","username":"'+username+'","mail":"'+email+'","password":"'+password+'"}';
   let url = API_URL+'auth/register'
 
   const response = await fetch(url, {
@@ -67,8 +70,10 @@ export const  checkCreditentials = async (jwt)=>{
     try {
       const myJson = await response.json(); //extract JSON from the http response
       //console.log(Object.keys(myJson))
-      if(typeof myJson.authenticated !== 'undefined')
-        return myJson.authenticated
+/*       if(typeof myJson.authenticated !== 'undefined')
+        return myJson.authenticated */
+      if(typeof myJson.id !== 'undefined')
+        return true
       else
         return false;
     } catch (error) {
@@ -76,6 +81,83 @@ export const  checkCreditentials = async (jwt)=>{
     }
 }
 
+export const  getMyInfos = async ()=>{
+  let jwt = Cookies.get("jwt")
+  let url = API_URL+'auth/me'
+  //console.log("sending jwt "+jwt)
+  const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization':'Bearer '+jwt,
+      }
+    })
+
+    try {
+      const myJson = await response.json(); //extract JSON from the http response
+      //console.log(Object.keys(myJson))
+/*       if(typeof myJson.authenticated !== 'undefined')
+        return myJson.authenticated */
+      if(typeof myJson.id !== 'undefined')
+        return myJson
+      else
+        return false;
+    } catch (error) {
+      return false;
+    }
+}
+
+export const getObjectsById = async (id)=>{
+  let jwt = Cookies.get("jwt")
+  let url = API_URL+'objects/owned-by?ownerId='+id
+  
+  //console.log("sending jwt "+jwt)
+  const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization':'Bearer '+jwt,
+      }
+    })
+
+    try {
+      const myJson = await response.json(); //extract JSON from the http response
+      //console.log(Object.keys(myJson))
+/*       if(typeof myJson.authenticated !== 'undefined')
+        return myJson.authenticated */
+      
+        return myJson
+
+    } catch (error) {
+      return false;
+    }
+}
+
+export const addProduct = async (id,title,author,description,category,price)=>{
+  let jwt = Cookies.get("jwt")
+  let url = API_URL+'objects?ownerId='+id
+  let reqBody = '{"title":"'+title+'","author":"'+author+'","description":"'+description+'","category":"'+category+'","price":'+parseInt(price)+'}';
+  console.log(reqBody)
+  const response = await fetch(url, {
+      method: 'POST',
+      body: reqBody, // string or object
+      headers: {
+        "Content-Type":'application/json',
+        'Authorization':'Bearer '+jwt,
+  
+      }
+    })
+
+    try {
+      const myJson = await response.json(); //extract JSON from the http response
+      //console.log(Object.keys(myJson))
+      if(typeof myJson.id !== 'undefined')
+        return true
+      else
+        return false
+        
+    } catch (error) {
+      return false;
+    }
+}
 
 export const getAllProducts = async ()=>{
     let reqBody = '';

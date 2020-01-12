@@ -9,12 +9,56 @@ import ModalDialog from '../Components/ModalDialog';
 import SearchBar from '../Components/SearchBar';
 import CustomButton from '../Components/CustomButton';
 
+import {getMyInfos,getObjectsById} from '../API/fakeAPI'
+
 
 
 class MyProfile extends Component{
 
-    componentDidMount(){
-        console.log("yo")
+    constructor(props){
+        super()
+        this.state=({
+            id:-1,
+            forename :"",
+            surname :"",
+            username:"",
+            mail:"",
+            balance:0.0,
+            admin:false,
+            avatar_url:"",
+            myObjects:[]
+        })
+
+    }
+
+    async componentDidMount(){
+        let infos = await getMyInfos()
+        console.log("INFOS RETURNED: "+Object.keys(infos))
+        console.log(infos)
+        if(infos !== false){
+            this.setState({
+                id:infos.id,
+                forename :infos.forename,
+                surname :infos.surname,
+                username:infos.username,
+                mail:infos.mail,
+                balance:infos.balance,
+                admin:infos.admin,
+                avatar_url:'https://eu.ui-avatars.com/api/?name='+infos.forename+'+'+infos.surname
+            },()=>{
+                this.getObjects()
+                }
+            )
+        }        
+    }
+
+    async getObjects(){
+        let objects = await getObjectsById(this.state.id)
+        if(objects !== false){
+            this.setState({
+                myObjects:objects
+            })
+        }
     }
     render(){
         return(
@@ -23,18 +67,24 @@ class MyProfile extends Component{
                     <Col sm={12} md={{span:4,offset:1}}>
                         <div className={styles.sm_panel}>
                             <div className="text-center">
-                                <Image className={styles.profileImage} src="https://via.placeholder.com/100" roundedCircle/>
-                                <p>Lucas Mercier (lucas.mercier@isep.fr)</p>
-                                <p>40 cryto bitcoins amérindiens</p>
+                                <Image className={styles.profileImage} src={this.state.avatar_url} roundedCircle/>
+                                <p>{this.state.forename} {this.state.surname}</p>
+                                <p>{this.state.mail}</p>
+                                <p>{this.state.balance} $$</p>
                             </div>
                         </div>
                         <div className={styles.sm_panel}>
                             <p>Borrowed objects</p>
                             <hr/>
-                            <Row>
-                                <Col lg={10}>Object name</Col>
-                                <Col lg={2}>2days</Col>
-                            </Row>
+                            {
+                                this.state.myObjects.map(obj=>(
+                                    <Row>
+                                        <Col lg={10}>Object name</Col>
+                                        <Col lg={2}>2days</Col>
+                                    </Row>
+                                ))
+                            }
+
                         </div>
                     </Col>
 
@@ -46,17 +96,16 @@ class MyProfile extends Component{
                             </Row>
                             
                             <hr/>
-                            <Row>
-                                <Col lg={8}>Object name</Col>
-                                <Col lg={2}><ModalDialog type="modify"/></Col>
-                                <Col lg={2}>delete</Col>
-                            </Row>
-                            <Row className="mt-2">
-                                <Col lg={8}>Object name</Col>
-                                <Col lg={2}>modify</Col>
-                                <Col lg={2}>delete</Col>
-                            </Row>
-                            <div className="text-center"><ModalDialog type="new"/></div>
+                            {
+                                this.state.myObjects.map(obj=>(
+                                    <Row>
+                                        <Col lg={8}>{obj.title}</Col>
+                                        <Col lg={2}><ModalDialog type="modify"/></Col>
+                                        <Col lg={2}>delete</Col>
+                                    </Row>
+                                ))
+                            }
+                            <div className="text-center"><ModalDialog type="new" userId={this.state.id}/></div>
                         </div>
                     </Col>
                 </Row>
