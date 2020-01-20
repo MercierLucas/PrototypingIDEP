@@ -4,14 +4,17 @@ import styles from '../style.module.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
+import Badge from 'react-bootstrap/Badge';
+import Form from 'react-bootstrap/Form';
 
 import ModalDialog from '../Components/ModalDialog';
 import SearchBar from '../Components/SearchBar';
 import CustomButton from '../Components/CustomButton';
 
-import {getMyInfos,getObjectsById} from '../API/fakeAPI'
+import {getMyInfos,getObjectsById,getBorrowedProducts,deleteObjectsById} from '../API/fakeAPI'
 
-
+import avatar from '../img/search.svg';
+import coin from '../img/coin-stack.svg';
 
 class MyProfile extends Component{
 
@@ -26,7 +29,11 @@ class MyProfile extends Component{
             balance:0.0,
             admin:false,
             avatar_url:"",
-            myObjects:[]
+            myObjects:[],
+            myObjectsFiltered:[],
+            searchBox:"",
+            borrowedObjects:[],
+            areObjectsFiltered:false
         })
 
     }
@@ -44,23 +51,97 @@ class MyProfile extends Component{
                 mail:infos.mail,
                 balance:infos.balance,
                 admin:infos.admin,
-                avatar_url:'https://eu.ui-avatars.com/api/?name='+infos.forename+'+'+infos.surname
+                avatar_url:'https://eu.ui-avatars.com/api/?name='+infos.forename+'+'+infos.surname,
+                searchBox:""
             },()=>{
-                this.getObjects()
+                this.getMyObjects()
+                this.getBorrowedObjects()
                 }
             )
         }        
     }
 
-    async getObjects(){
+    async getMyObjects(){
+        console.log("getting my objects...")
         let objects = await getObjectsById(this.state.id)
         if(objects !== false){
             this.setState({
                 myObjects:objects
+            },()=>{
+                console.log(this.state.myObjects)
             })
         }
     }
+
+    async getBorrowedObjects(){
+        let bObjects = await getBorrowedProducts(this.state.id)
+        if(bObjects !== false){
+            this.setState({
+                borrowedObjects:bObjects
+            })
+        }
+    }
+
+    containsWord(word,array){
+        let res=[]
+        array.forEach(obj => {
+            if(obj.title.includes(word))
+                res.push(obj)
+        });
+
+        return res
+    }
+
+    onResearchChange(e){
+        
+        e.preventDefault()
+        let word = e.target.value
+        console.log("LOWER: "+word)
+        if(word.length !== 0){
+            this.setState({searchBox:word},()=>{
+                if(this.state.searchBox.length !== 0){
+                    this.setState({
+                        myObjectsFiltered: this.containsWord(word,this.state.myObjects)
+                    })
+                }
+                console.log(this.state.myObjectsFiltered)
+                this.setState({areObjectsFiltered:true})
+            })
+        }else{
+            this.setState({searchBar:""})
+            this.setState({areObjectsFiltered:false})
+        }
+
+        console.log(word.length!==0)
+    }
+
+    displayObjects(){
+            this.state.myObjects.map(obj=>(
+                <Row>
+                    <Col lg={4}>{obj.title}</Col>
+                    {
+                        (obj.borrowed)
+                        ? (<Col lg={2}><Badge variant="secondary">borrowed</Badge></Col>)
+                        : (<Col lg={2}><Badge variant="success">available</Badge></Col>)
+                    }
+                    <Col lg={2}>{obj.price} $</Col>
+                    <Col lg={2}><ModalDialog type="modify"/></Col>
+                    <Col lg={2}>delete</Col>
+                </Row>
+            ))
+        
+    }
+
+    async deleteItem(id){
+        console.log("deleting item")
+        let res = await deleteObjectsById(id)
+        console.log(res)
+        this.getMyObjects()
+    }
     render(){
+        let myObjects;
+        this.state.areObjectsFiltered ? myObjects=this.state.myObjectsFiltered : myObjects = this.state.myObjects
+
         return(
             <div className="mt-5">
                 <Row>
@@ -70,17 +151,17 @@ class MyProfile extends Component{
                                 <Image className={styles.profileImage} src={this.state.avatar_url} roundedCircle/>
                                 <p>{this.state.forename} {this.state.surname}</p>
                                 <p>{this.state.mail}</p>
-                                <p>{this.state.balance} $$</p>
+                                <p>{this.state.balance} <Image className={styles.optionsImg} src={coin}/></p>
                             </div>
                         </div>
                         <div className={styles.sm_panel}>
                             <p>Borrowed objects</p>
                             <hr/>
                             {
-                                this.state.myObjects.map(obj=>(
+                                this.state.borrowedObjects.map(obj=>(
                                     <Row>
-                                        <Col lg={10}>Object name</Col>
-                                        <Col lg={2}>2days</Col>
+                                        <Col lg={10}>{obj.title}</Col>
+                                        <Col lg={2}>X days</Col>
                                     </Row>
                                 ))
                             }
@@ -92,20 +173,36 @@ class MyProfile extends Component{
                         <div className={styles.md_panel}>
                             <Row>
                                 <Col><p>Objects I proposed</p></Col>
-                                <Col><SearchBar/></Col>
+                                <Col>
+                                    <input type="text" className={styles.searchBar} onChange={(value)=>this.onResearchChange(value)}  />
+                                    <img src={avatar} className={styles.iconRed} alt="" />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={4}>Object</Col>
+                                <Col lg={2}>Status</Col>
+                                <Col lg={2}>Price</Col>
+                                <Col lg={4}>Actions</Col>
                             </Row>
                             
                             <hr/>
                             {
-                                this.state.myObjects.map(obj=>(
+                                myObjects.map(obj=>(
                                     <Row>
-                                        <Col lg={8}>{obj.title}</Col>
-                                        <Col lg={2}><ModalDialog type="modify"/></Col>
-                                        <Col lg={2}>delete</Col>
+                                        <Col lg={4}>{obj.title}</Col>
+                                        
+                                        {
+                                            (obj.borrowed)
+                                            ? (<Col lg={2}><Badge variant="secondary">borrowed</Badge></Col>)
+                                            : (<Col lg={2}><Badge variant="success">available</Badge></Col>)
+                                        }
+                                        <Col lg={2}>{obj.price} $</Col>
+                                        <Col lg={2}><ModalDialog type="edit" objId={obj.id} title={obj.title} category={obj.category} description={obj.description} price={obj.price} author={obj.author} /></Col>
+                                        <Col lg={2}><a href="# " className={styles.redColor} onClick={()=>{if(window.confirm("Are you sure?")) this.deleteItem(obj.id)}}>delete</a></Col>
                                     </Row>
                                 ))
                             }
-                            <div className="text-center"><ModalDialog type="new" userId={this.state.id}/></div>
+                            <div className="text-center mt-3"><ModalDialog type="new" userId={this.state.id}/></div>
                         </div>
                     </Col>
                 </Row>

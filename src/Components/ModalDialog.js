@@ -12,7 +12,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import AddProduct from '../Pages/AddProduct';
 
-import {addProduct} from '../API/fakeAPI'
+import {addProduct,updateObjectsInfo} from '../API/fakeAPI'
 
 
 class ModalDialog extends Component{
@@ -21,6 +21,7 @@ class ModalDialog extends Component{
         super(props);
         this.state = {
             show:false,
+            objId:-1,
             itemTitle:"",
             itemAuthor:"",
             itemCategory:"",
@@ -32,6 +33,18 @@ class ModalDialog extends Component{
     }
 
     componentDidMount(){
+        console.log("PROPS")
+        console.log(this.props)
+        if(this.props.type === "edit"){
+            this.setState({
+                objId:this.props.objId,
+                itemTitle:this.props.title,
+                itemAuthor:this.props.author,
+                itemCategory:this.props.category,
+                itemDescription:this.props.description,
+                itemPrice:this.props.price
+            })
+        }
     }
 
     handleShow(){
@@ -73,14 +86,27 @@ class ModalDialog extends Component{
         let cats =["LIVRE", "LSCOLAIRE", "CD", "DVD"]
         if(this.state.itemTitle.length !== 0 && this.state.itemAuthor.length !== 0 && this.state.itemCategory.length !== 0 && this.state.itemDescription.length !== 0 && this.state.itemPrice.length !== 0){
             if(cats.includes(this.state.itemCategory)){
-                let resProduct = await addProduct(this.props.userId,this.state.itemTitle,this.state.itemAuthor,this.state.itemDescription,this.state.itemCategory,this.state.itemPrice)
-                if(resProduct === true){
-                    this.setState({successMessage:"Successfully added"})
-                    this.setState({errorMessage:""})
-                }else{
-                    this.setState({successMessage:""})
-                    this.setState({errorMessage:"Error while adding product"})
+                if(this.props.type === "edit"){
+                    let resProduct = await updateObjectsInfo(this.state.objId,this.state.itemTitle,this.state.itemAuthor,this.state.itemDescription,this.state.itemCategory,this.state.itemPrice)
+                    if(resProduct === true){
+                        this.setState({successMessage:"Edit successful"})
+                        this.setState({errorMessage:""})
+                    }else{
+                        this.setState({successMessage:""})
+                        this.setState({errorMessage:"Error while editing product"})
+                    }
                 }
+                else if(this.props.type === "new"){
+                    let resProduct = await addProduct(this.props.userId,this.state.itemTitle,this.state.itemAuthor,this.state.itemDescription,this.state.itemCategory,this.state.itemPrice)
+                    if(resProduct === true){
+                        this.setState({successMessage:"Added product successful"})
+                        this.setState({errorMessage:""})
+                    }else{
+                        this.setState({successMessage:""})
+                        this.setState({errorMessage:"Error while adding product"})
+                    }
+                }
+
             }else{
                 this.setState({successMessage:""})
                 this.setState({errorMessage:"Please select a valid category"})
@@ -96,13 +122,16 @@ class ModalDialog extends Component{
     render(){
         let opener;
         let title;
-        if(this.props.type === "modify"){
+        let confirmBtn;
+        if(this.props.type === "edit"){
             opener = <a href="#" onClick={()=>this.handleShow()}>modify</a>;
             title = "Modifying existing object";
+            confirmBtn = "Edit";
         }
         else if (this.props.type === "new"){
             opener = <button onClick={()=>this.handleShow()} className={styles.productItemUnselect}>Add product</button>;
             title = "Adding new object";
+            confirmBtn = "Add"
         }
             
             //opener = <CustomButton onClick={()=>this.handleShow()} name="Add product"/>;
@@ -159,37 +188,18 @@ class ModalDialog extends Component{
 
                                 <Form.Group as={Row} controlId="formPlaintextPassword">
                                     <Form.Label column sm="2">
-                                    Duration
-                                    </Form.Label>
-                                    <Col sm="10">
-                                        <Form.Control type="text" placeholder="Duration" />
-                                    </Col>
-                                </Form.Group>
-
-                            </Col>
-                            <Col>
-                                <Form.Group as={Row} controlId="formPlaintextPassword">
-                                    <Form.Label column sm="2">
-                                    Exchange place
-                                    </Form.Label>
-                                    <Col sm="10">
-                                        <Form.Control type="text" placeholder="Duration" />
-                                    </Col>
-                                </Form.Group>
-
-                                <Form.Group as={Row} controlId="formPlaintextPassword">
-                                    <Form.Label column sm="2">
                                     Price
                                     </Form.Label>
                                     <Col sm="10">
                                         <Form.Control type="text" placeholder="Duration" onChange={(value)=>this.onItemPriceChange(value)} value={this.state.itemPrice}/>
                                     </Col>
                                 </Form.Group>
+
                             </Col>
                         </Row>
                         <div className="text-center">
                             <Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg" >
-                                Add product
+                                {confirmBtn}
                             </Button>
                         </div>
                         {

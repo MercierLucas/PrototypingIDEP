@@ -12,6 +12,7 @@ import Image from 'react-bootstrap/Image'
 import LoadingScreen from '../Components/LoadingScreen'
 
 import {login} from '../API/fakeAPI'
+
 import illustration from '../img/connexion.svg'
 
 import Cookies from 'js-cookie';
@@ -59,7 +60,7 @@ class Connexion extends Component{
                     this.setState({redirect:true})
                     console.log("waited 2s")
                     this.setState({isLoading:false})
-                },2000)
+                },1000)
                 
             }
         }else{

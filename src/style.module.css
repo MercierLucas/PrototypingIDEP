@@ -37,6 +37,11 @@
     color:#FFFFFF;
 }
 
+.redColor{
+    color:#f06261 !important;
+}
+
+
 .iconRed{
     color: #f06261;
     height: 20px;
@@ -46,20 +51,20 @@
 }
 
 .searchBar{
-    background-color: #f4f6f6;
+    padding-left: 10px;
+    background-color: #e5e5e5;
     border:none;
     border-radius: 30px;
-    box-shadow: 2px 5px 5px grey;
+    box-shadow: 1px 2px 1px grey;
 }
 .centerVH{
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 75%;
+    width: 50%;
     -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    background-color: white;  
+    transform: translate(-50%, -50%);   
 }
 
 .loadingDiv{
@@ -180,7 +185,7 @@
 
 .chatBox{
     margin-bottom: 10px;
-    background-color: #e5e5e5;
+    /* background-color: #e5e5e5; */
     border-radius: 5px;
     padding: 10px;
 }
@@ -206,6 +211,55 @@
     scrollbar-color: #F06261 #f4f6f6;
 }
 
+.scrollableUserList{
+    height: 90%;
+    flex:1;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #F06261 #f4f6f6;
+}
+
+.userListItem{
+    width: 90%;
+    border-radius: 5px;
+    background-color: #f4f6f6;
+    padding: 5px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.userListItemSelected{
+    border:0;
+    width: 98%;
+    border-radius: 5px;
+    background-color: #e5e5e5;
+    padding: 5px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.userListItem:hover {
+    cursor: pointer;
+    background-color: #e5e5e5;
+}
+
+.userListItemSelected:hover{
+    cursor: pointer;
+    background-color: #e5e5e5;
+}
+
+.userListImg{
+    height: 100%;
+}
+
+.userListName{
+    position: absolute;
+    margin:0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
 .chatInput{
     font-size: 12px;
     border:0;
@@ -213,4 +267,23 @@
     background-color: #e5e5e5;
     padding: 5px;
     resize: none;
+}
+
+.optionsImg{
+    color:#F06261;
+    height: 20px;
+}
+
+
+
+/* guillaume */
+
+.spacing{
+    padding:20px;
+}
+
+.testeur{
+    background-color: #f4f6f6;
+    border-radius: 5%;
+    padding:20px;
 }

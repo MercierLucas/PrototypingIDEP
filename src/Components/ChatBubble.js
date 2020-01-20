@@ -19,12 +19,13 @@ class ChatBubble extends Component{
     }
     render(){
         let className;
+        let url = "https://eu.ui-avatars.com/api/?name="+this.props.avatar
         if(this.props.isMine) className = styles.leftAlignedBox;
         else className = styles.rightAlignedBox;
         return(
             <div className={styles.chatBox}>
                 <div className={className}>
-                    <div><Image src="https://via.placeholder.com/40" roundedCircle /></div>
+                    <div><Image src={url} roundedCircle style={{'height':'50px'}}/></div>
                     <div  className={styles.userBubble}>
                         <p>{this.props.chat}</p>
                     </div>

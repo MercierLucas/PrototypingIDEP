@@ -1,14 +1,44 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-class Search extends Component{
-    render(){
-        return(
+
+
+import OtherFiltering from '../Components/OtherFiltering'
+import {getAllObjects} from '../API/fakeAPI'
+
+
+class Search extends Component {  
+
+    constructor(){
+        super();
+        this.state=({
+            data:[],
+            isLoading:false,
+        });
+    }
+    
+    
+    async componentWillMount(){
+        console.log('Mounted')
+        let products = await getAllObjects()  
+        if (products !== false) {
+            this.setState({
+                data:products
+            }
+            )
+        }     
+    }
+
+
+    render() {
+
+        return (
             <div className="mt-5 text-center">
                 <h1>This is the search page</h1>
+                <OtherFiltering bigdata={this.state.data}/>
             </div>
         );
     }
