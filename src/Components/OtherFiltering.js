@@ -131,13 +131,15 @@ export default class MyFilteringComponent extends React.Component {
         return (
 
             <div>
-                <input value={this.state.searchTerm} onChange={this.handleSearchInput} />
-                <div>
-                    <FlatList list={this.props.bigdata} renderItem={this.renderItem} searchTerm={this.state.searchTerm}
-                        searchBy="product_name"
-                        searchCaseInsensitive
-                        displayGrid
-                    />
+                <input value={this.state.searchTerm} onChange={this.handleSearchInput} className={styles.searchBar2}/>
+                <div style={{'height':'700px'}}>
+                    <div className={styles.scrollableItem}>
+                        <FlatList list={this.props.bigdata} renderItem={this.renderItem} searchTerm={this.state.searchTerm}
+                            searchBy="title"
+                            searchCaseInsensitive
+                            displayGrid
+                        />
+                    </div>
                 </div>
                 <Modal show={this.state.show} onHide={this.hideModal}>
                     <Modal.Header closeButton>
@@ -162,7 +164,7 @@ export default class MyFilteringComponent extends React.Component {
                         <Button variant="secondary" onClick={this.hideModal}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={()=>this.doTransaction()} >
+                        <Button variant="primary" onClick={()=>this.doTransaction()} disabled={this.state.balance<this.state.item.price || this.state.sellerInfo.username===this.state.username}>
                             I want to buy !
                      </Button>
                     </Modal.Footer>

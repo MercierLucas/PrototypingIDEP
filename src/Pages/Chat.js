@@ -214,12 +214,11 @@ class Chat extends Component{
                     </Col>
 
                     <Col lg={7} className={styles.lg_panel}>
-                        <p>Messages from: {this.state.selectedUserId}</p>
                         <div className={styles.scrollableChat}>
                         {
                              this.state.allMessages.map(message=>(
                                     message.sender.id === this.state.userId
-                                    ?  (<ChatBubble chat={message.content} avatar={message.receiver.username} isMine={0}/>)
+                                    ?  (<ChatBubble chat={message.content} avatar={message.sender.username} isMine={0}/>)
                                     : (<ChatBubble chat={message.content} avatar={message.sender.username} isMine={1}/>)
                             ))
                         }
@@ -230,8 +229,8 @@ class Chat extends Component{
                             <ChatBubble chat={lorem} isMine={1}/> */}
                         </div>
                         <Form onSubmit={(e)=>this.sendMessage(e)}>
-                            <textarea className={styles.chatInput} cols="50" rows="2" onChange={(e)=>this.onMessageContentChange(e)}></textarea>
-                            <Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg" >Send</Button>
+                            <div><textarea className={styles.chatInput} cols="50" rows="2" onChange={(e)=>this.onMessageContentChange(e)}></textarea></div>
+                            <div className='mt-1'><Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg" >Send</Button></div>
                         </Form>
                         
                     </Col>

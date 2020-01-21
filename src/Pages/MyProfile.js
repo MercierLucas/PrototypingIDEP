@@ -8,6 +8,7 @@ import Badge from 'react-bootstrap/Badge';
 import Form from 'react-bootstrap/Form';
 
 import ModalDialog from '../Components/ModalDialog';
+import AddFileModal from '../Components/addFileModal';
 import SearchBar from '../Components/SearchBar';
 import CustomButton from '../Components/CustomButton';
 
@@ -15,6 +16,7 @@ import {getMyInfos,getObjectsById,getBorrowedProducts,deleteObjectsById} from '.
 
 import avatar from '../img/search.svg';
 import coin from '../img/coin-stack.svg';
+import trash from '../img/delete.svg';
 
 class MyProfile extends Component{
 
@@ -179,7 +181,7 @@ class MyProfile extends Component{
                                 </Col>
                             </Row>
                             <Row>
-                                <Col lg={4}>Object</Col>
+                                <Col lg={3}>Object</Col>
                                 <Col lg={2}>Status</Col>
                                 <Col lg={2}>Price</Col>
                                 <Col lg={4}>Actions</Col>
@@ -189,16 +191,17 @@ class MyProfile extends Component{
                             {
                                 myObjects.map(obj=>(
                                     <Row>
-                                        <Col lg={4}>{obj.title}</Col>
+                                        <Col lg={3}>{obj.title}</Col>
                                         
                                         {
                                             (obj.borrowed)
                                             ? (<Col lg={2}><Badge variant="secondary">borrowed</Badge></Col>)
                                             : (<Col lg={2}><Badge variant="success">available</Badge></Col>)
                                         }
-                                        <Col lg={2}>{obj.price} $</Col>
-                                        <Col lg={2}><ModalDialog type="edit" objId={obj.id} title={obj.title} category={obj.category} description={obj.description} price={obj.price} author={obj.author} /></Col>
-                                        <Col lg={2}><a href="# " className={styles.redColor} onClick={()=>{if(window.confirm("Are you sure?")) this.deleteItem(obj.id)}}>delete</a></Col>
+                                        <Col lg={2}>{obj.price} <Image className={styles.optionsImg} src={coin}/></Col>
+                                        <Col lg={1}><ModalDialog type="edit" objId={obj.id} title={obj.title} category={obj.category} description={obj.description} price={obj.price} author={obj.author} /></Col>
+                                        <Col lg={1}><AddFileModal type="edit" objId={obj.id}/></Col>
+                                        <Col lg={1}><a href="# " className={styles.redColor} onClick={()=>{if(window.confirm("Are you sure?")) this.deleteItem(obj.id)}}><Image className={styles.optionsImg} src={trash}/></a></Col>
                                     </Row>
                                 ))
                             }

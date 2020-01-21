@@ -134,12 +134,18 @@ export const  getMyInfos = async ()=>{
 
 export const updateObjectsInfo = async (id,title,author,description,category,price)=>{
   let jwt = Cookies.get("jwt")
-  let url = API_URL+'objects/modif/'+id+'?title='+title+'&author='+author+'&description='+description+'&category='+category+'&price='+price
-  //console.log("sending jwt "+jwt)
+  //let url = API_URL+'objects/modif/'+id+'?title='+title+'&author='+author+'&description='+description+'&category='+category+'&price='+price
+  let url = API_URL+'objects/modif/'+id
+  let reqBody = '{"title":"'+title+'","author":"'+author+'","description":"'+description+'","category":"'+category+'","price":'+price+'}';
+
+  console.log(url)
+  console.log(reqBody)
   const response = await fetch(url, {
-      method: 'POST',
+      method: 'PATCH',
+      body: reqBody, // string or object
       headers: {
         'Authorization':'Bearer '+jwt,
+        'Content-Type':'application/json'
       }
     })
 
@@ -257,8 +263,9 @@ export const deleteObjectsById = async (id)=>{
     }
 }
 
-export const addProduct = async (id,title,author,description,category,price)=>{
+export const addProduct = async (id,title,author,description,category,price,file)=>{
   let jwt = Cookies.get("jwt")
+  uploadFile(id,file)
   let url = API_URL+'objects?ownerId='+id
   let reqBody = '{"title":"'+title+'","author":"'+author+'","description":"'+description+'","category":"'+category+'","price":'+parseInt(price)+'}';
   console.log(reqBody)
@@ -275,6 +282,50 @@ export const addProduct = async (id,title,author,description,category,price)=>{
     try {
       const myJson = await response.json(); //extract JSON from the http response
       //console.log(Object.keys(myJson))
+      if(typeof myJson.id !== 'undefined'){
+        return true
+      }
+        
+      else
+        return false
+        
+    } catch (error) {
+      return false;
+    }
+}
+
+
+export const postFile = async (id,file)=>{
+  const formData = new FormData()
+  let url_file = API_URL+'objects/'+id+'/uploadFile'
+  //const fileField = document.querySelector(fileSelector)
+  formData.append('file', file)
+
+  return fetch(url_file, {
+    method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
+    body: formData  // Coordinate the body type with 'Content-Type'
+  })
+  .then(response => response.json())
+}
+
+export const uploadFile = async (id,file)=>{
+  let jwt = Cookies.get("jwt")
+  let url = API_URL+'objects/'+id+'/uploadFile'
+  let formdata = new FormData()
+  formdata.append("file",file)
+  const response = await fetch(url, {
+      method: 'POST',
+      body: formdata, // string or object
+      headers: {
+        'Authorization':'Bearer '+jwt,
+  
+      }
+    })
+    try {
+      const myJson = await response.json(); //extract JSON from the http response
+      //console.log(Object.keys(myJson))
+      console.log("RES FILE")
+      console.log(myJson)
       if(typeof myJson.id !== 'undefined')
         return true
       else

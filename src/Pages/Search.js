@@ -36,8 +36,7 @@ class Search extends Component {
     render() {
 
         return (
-            <div className="mt-5 text-center">
-                <h1>This is the search page</h1>
+            <div className="text-center">
                 <OtherFiltering bigdata={this.state.data}/>
             </div>
         );

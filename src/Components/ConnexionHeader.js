@@ -17,12 +17,16 @@ class ConnexionHeader extends Component{
         super()
         this.state=({
             username:'',
+            avatar:''
         })
     }
     async componentDidMount(){
         let infos = await getMyInfos()
         if(infos !== false){
-            this.setState({username:infos.username})
+            this.setState({
+                username:infos.username,
+                avatar:'https://eu.ui-avatars.com/api/?name='+infos.username
+            })
         }
     }
     render(){
@@ -30,7 +34,7 @@ class ConnexionHeader extends Component{
             <Row className={styles.BannerColor} style={{width:"92.5vw",position:"relative",boxShadow:" 2px 2px 5px grey"}}>
                 <Col lg={{ span:2, offset:8}} sm={{ span:2, offset:7}} xs={{ span:5}} ><p className={styles.accountName}>{this.state.username}</p></Col>
                 <Col lg={1} sm={2} xs={6}><Link to='/disconnect'><p className={styles.accountName}>Disconnect</p></Link></Col>
-                <Col lg={1} sm={2} xs={6}><Link to='/usr/BackOffice'><Image src="https://via.placeholder.com/45" roundedCircle  /></Link></Col>
+                <Col lg={1} sm={2} xs={6}><Link to='/usr/BackOffice'><Image src={this.state.avatar} style={{'height':'45px'}} roundedCircle  /></Link></Col>
             </Row>
         );
     }

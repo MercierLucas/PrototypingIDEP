@@ -14,6 +14,7 @@ import AddProduct from '../Pages/AddProduct';
 
 import {addProduct,updateObjectsInfo} from '../API/fakeAPI'
 
+import edit from '../img/edit.svg';
 
 class ModalDialog extends Component{
 
@@ -28,7 +29,8 @@ class ModalDialog extends Component{
             itemDescription:"",
             itemPrice:0,
             errorMessage:"",
-            successMessage:""
+            successMessage:"",
+            image1:''
         };
     }
 
@@ -119,12 +121,16 @@ class ModalDialog extends Component{
 
     }
 
+    onImageChange(e){
+        console.log(e.target.files[0])
+    }
+
     render(){
         let opener;
         let title;
         let confirmBtn;
         if(this.props.type === "edit"){
-            opener = <a href="#" onClick={()=>this.handleShow()}>modify</a>;
+            opener = <a href="#" onClick={()=>this.handleShow()}><Image className={styles.optionsImg} src={edit}/></a>;
             title = "Modifying existing object";
             confirmBtn = "Edit";
         }
@@ -144,7 +150,7 @@ class ModalDialog extends Component{
                     </Modal.Header>
 
                     <Modal.Body>
-                        <Form onSubmit={(e)=>this.onSubmit(e)}>
+                        <Form onSubmit={(e)=>this.onSubmit(e)} encType='mutlipart/form-data'>
                         <Row>
                             <Col>
                             
@@ -196,6 +202,7 @@ class ModalDialog extends Component{
                                 </Form.Group>
 
                             </Col>
+
                         </Row>
                         <div className="text-center">
                             <Button variant="outline-primary" className={styles.outline_btn} type="submit" size="lg" >
